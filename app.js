@@ -94,9 +94,41 @@
     } catch (e) {}
   }
 
+  // ── Save image ──────────────────────────────────────────────
+
+  function saveImage() {
+    if (!ggbApplet || isLoading) return;
+    try {
+      // getPNGBase64 requires HTTPS or localhost — will fail on file:// protocol
+      var base64 = ggbApplet.getPNGBase64(1, false, 96);
+      if (!base64) throw new Error('getPNGBase64 returned empty result');
+
+      var dataUrl = 'data:image/png;base64,' + base64;
+
+      document.getElementById('modal-img').src = dataUrl;
+
+      var link      = document.getElementById('download-link');
+      link.href     = dataUrl;
+      link.download = 'geogebra-' + currentApp + '.png';
+
+      document.getElementById('image-modal').classList.remove('hidden');
+    } catch (e) {
+      console.error('saveImage error:', e);
+      alert('截图失败：' + (e.message || e) + '\n\n请通过 HTTPS 链接访问（如 GitHub Pages），本地 file:// 协议不支持此操作。');
+    }
+  }
+
+  function closeModal() {
+    document.getElementById('image-modal').classList.add('hidden');
+    document.getElementById('modal-img').src = '';
+  }
+
   // ── Init ─────────────────────────────────────────────────────
 
   document.getElementById('tab-bar').addEventListener('click', onTabClick);
+  document.getElementById('save-btn').addEventListener('click', saveImage);
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  document.querySelector('.modal-backdrop').addEventListener('click', closeModal);
   window.addEventListener('resize', onResize);
 
   loadApp(currentApp);
