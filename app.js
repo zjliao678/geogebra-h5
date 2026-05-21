@@ -56,7 +56,7 @@
       showToolBar:       true,
       showAlgebraInput:  !!ALGEBRA_INPUT_APPS[appName],
       showResetIcon:     false,
-      enableShiftDragZoom: false,  // prevents conflict with WeChat scroll gestures
+      enableShiftDragZoom: true,
       enableRightClick:  false,
       useBrowserForJS:   false,
       appletOnLoad: function () {
