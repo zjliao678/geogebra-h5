@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <!-- WeChat sharing card -->
+  <meta property="og:title" content="GeoGebra 数学工具" />
+  <meta property="og:description" content="在线数学计算器 — 函数图像、几何作图、三维图形" />
+
+  <title>GeoGebra 数学工具</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+</head>
+<body>
+
+  <nav id="tab-bar">
+    <button class="tab active" data-app="graphing">函数图像</button>
+    <button class="tab" data-app="geometry">几何</button>
+    <button class="tab" data-app="3d">三维</button>
+    <button class="tab" data-app="classic">经典</button>
+  </nav>
+
+  <div id="ggb-container">
+    <div id="ggb-element"></div>
+    <div id="loading-overlay">
+      <div class="spinner"></div>
+      <p>加载中，请稍候…</p>
+    </div>
+  </div>
+
+  <footer id="attribution">
+    Made with <a href="https://www.geogebra.org" target="_blank">GeoGebra®</a>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
