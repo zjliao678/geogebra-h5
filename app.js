@@ -7,6 +7,7 @@
   var currentApp = 'graphing';
   var ggbApplet  = null;
   var isLoading  = false;
+  var loadTimer  = null;
 
   // Apps that show the algebra input bar
   var ALGEBRA_INPUT_APPS = { graphing: true, classic: true };
@@ -37,6 +38,12 @@
     document.getElementById('ggb-element').innerHTML = '';
   }
 
+  function onAppletLoaded() {
+    if (loadTimer) { clearTimeout(loadTimer); loadTimer = null; }
+    hideLoading();
+    isLoading = false;
+  }
+
   // ── Load a GeoGebra app ──────────────────────────────────────
 
   function loadApp(appName) {
@@ -45,6 +52,10 @@
 
     showLoading();
     clearApplet();
+
+    // Fallback: force-hide loading if appletOnLoad never fires (e.g. slow first load)
+    if (loadTimer) clearTimeout(loadTimer);
+    loadTimer = setTimeout(onAppletLoaded, 30000);
 
     var size = appletSize();
 
@@ -59,10 +70,7 @@
       enableShiftDragZoom: true,
       enableRightClick:  false,
       useBrowserForJS:   false,
-      appletOnLoad: function () {
-        hideLoading();
-        isLoading = false;
-      }
+      appletOnLoad: onAppletLoaded
     };
 
     ggbApplet = new GGBApplet(params, true);
