@@ -34,6 +34,8 @@
       try { ggbApplet.remove(); } catch (e) {}
       ggbApplet = null;
     }
+    // Also clear the global API reference GeoGebra sets on window
+    window.ggbApplet = null;
     // Reset container so GeoGebra can inject a fresh instance
     document.getElementById('ggb-element').innerHTML = '';
   }
@@ -105,10 +107,12 @@
   // ── Save image ──────────────────────────────────────────────
 
   function saveImage() {
-    if (!ggbApplet || isLoading) return;
+    // Use window.ggbApplet — the real GeoGebra API object set by GeoGebra after inject()
+    // Our local `ggbApplet` is only the GGBApplet config wrapper, not the API
+    var api = window.ggbApplet;
+    if (!api || isLoading) return;
     try {
-      // getPNGBase64 requires HTTPS or localhost — will fail on file:// protocol
-      var base64 = ggbApplet.getPNGBase64(1, false, 96);
+      var base64 = api.getPNGBase64(1, false, 96);
       if (!base64) throw new Error('getPNGBase64 returned empty result');
 
       var dataUrl = 'data:image/png;base64,' + base64;
